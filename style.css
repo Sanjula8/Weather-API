@@ -44,3 +44,7 @@ h5 {
 #forecast {
 	margin-top: 10px;
 }
+
+.hide {
+	display: none;
+}
