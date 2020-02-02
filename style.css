@@ -1,0 +1,46 @@
+body {
+	background: linear-gradient(
+		90deg,
+		rgb(114, 168, 235) 27%,
+		rgb(159, 218, 255) 88%
+	);
+}
+
+li {
+	list-style-type: none;
+	padding-top: 20px;
+	margin-left: -30px;
+}
+
+h4 {
+	padding-top: 20px;
+}
+
+#weather-stage {
+	padding: 20px;
+}
+
+header {
+	color: black;
+}
+
+.search {
+	background-color: rgb(84, 94, 111);
+	border: none;
+}
+
+i {
+	color: white;
+}
+
+.search:hover {
+	background: black;
+}
+
+h5 {
+	margin: 20px;
+}
+
+#forecast {
+	margin-top: 10px;
+}
