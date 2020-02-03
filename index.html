@@ -47,12 +47,14 @@
 									<form class="form-inline">
 										<input
 											class="form-control mr-sm-2"
+											id="searchCity"
 											type="search"
 											placeholder="City name..."
 											aria-label="Search"
 										/>
 										<button
 											class="btn btn-outline-success my-2 my-sm-0 search"
+											id="searchBtn"
 											type="submit"
 										>
 											<i class="fas fa-search"></i>
@@ -65,41 +67,14 @@
 
 					<div class="row hide">
 						<div class="col-12 list-group">
-							<div class="list-group">
-								<a
-									href="#"
-									class="list-group-item list-group-item-action"
-								>
-									Cras justo odio
-								</a>
-								<a
-									href="#"
-									class="list-group-item list-group-item-action"
-									>Dapibus ac facilisis in</a
-								>
-								<a
-									href="#"
-									class="list-group-item list-group-item-action"
-									>Morbi leo risus</a
-								>
-								<a
-									href="#"
-									class="list-group-item list-group-item-action"
-									>Porta ac consectetur ac</a
-								>
-								<a
-									href="#"
-									class="list-group-item list-group-item-action"
-									>Vestibulum at eros</a
-								>
-							</div>
+							<div class="list-group"></div>
 						</div>
 					</div>
 				</aside>
 
 				<main class="col-9 hide" id="weather-stage">
 					<div class="card">
-						<div class="card-body">
+						<div class="card-body" id="currentCity">
 							<h3>Display Weather</h3>
 							<h4>City Name</h4>
 							<ul>
@@ -114,7 +89,7 @@
 						<div class="row">
 							<h5>5 Day Forecast</h5>
 						</div>
-						<div class="row" id="forecast">
+						<div class="row" id="forecast5">
 							<div class="col-12 col-md-2">
 								<div
 									class="card bg-primary text-white text-center p-3"
@@ -167,6 +142,6 @@
 		</div>
 		<!-- Script Files -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		<script src="assets/js/main.js"></script>
+		<script src="script.js"></script>
 	</body>
 </html>
