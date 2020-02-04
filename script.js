@@ -2,11 +2,14 @@
 var apiKey = "&appid=43b150c9d098f7c4ffc1080bdaa12675";
 
 // Store value of input
-let city = $("#searchTerm").val();
+var city = $("#searchTerm").val();
 
-let date = new Date();
+var date = new Date();
+
+let temp1;
 
 // Search Button Keypress:
+// KeyCode 13 = Enter
 $("#searchTerm").keypress(function(event) {
 	if (event.keyCode === 13) {
 		event.preventDefault();
@@ -14,16 +17,14 @@ $("#searchTerm").keypress(function(event) {
 	}
 });
 
-// Search Button On-Function:
+// Search Button On-Click Function:
 
 $("#searchBtn").on("click", function() {
-	var city = "Dallas,US";
-	// var city = $("#searchCity").val();
+	event.preventDefault();
+	// var city = "Dallas";
+	var city = $("#searchCity").val();
 
-	// // Clear Search Box
-	// $("#searchCity").val("");
-
-	// Attach Weather API for Current City
+	// Attach Weather API for Current City Weather
 	var queryURL =
 		"https://api.openweathermap.org/data/2.5/weather?q=" + city + apiKey;
 
@@ -34,23 +35,35 @@ $("#searchBtn").on("click", function() {
 		// We store all of the retrieved data inside of an object called "response"
 		.then(function(response) {
 			// Log the queryURL
-			console.log(queryURL);
+			// console.log(queryURL);
 
-			// Log the resulting object
-			console.log(response);
+			// Assign temp1 to response so I can see it in the console
+			temp1 = response;
 
-			// console.log(response.name);
+			console.log(response.name);
 			// console.log(response.weather[0].icon);
-
-			// let tempF = (response.main.temp - 273.15) * 1.8 + 32;
 			// console.log(Math.floor(tempF));
-
 			// console.log(response.main.humidity);
-
 			// console.log(response.wind.speed);
+			// console.log(response.uv)
 
-			// getCurrentConditions(response);
-			// getCurrentForecast(response);
-			// makeList();
+			// Current Conditions for Searched City Name
+			getCurrentConditions(response);
+			// Current Forecase for Searched City Name
+			getCurrentForecast(response);
+			// Searches create a list below and is stored in local storage:
+			makeList();
 		});
+
+	// Make list items to store searches in:
+	function makeList() {
+		var searchHistory = $("#search-history");
+		let listItem = $("<li>")
+			.removeClass("hide")
+			.text(city);
+		// Prepend search items so they appear at the front
+		$().prepend(searchHistory);
+	}
 });
+
+// Local storage for list thing
