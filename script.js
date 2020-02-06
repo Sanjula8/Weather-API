@@ -45,12 +45,23 @@ $("#searchBtn").on("click", function() {
 			// Assign temp1 to response so I can see it in the console
 			temp1 = response;
 			// AJAX call for UV Index
-			// var lat = response.coord.lat;
-			// var lon = response.coord.lon;
-			// var uvURL =
-			// $.ajax({
-			//     url:
-			// })
+			var lat = response.coord.lat;
+			var lon = response.coord.lon;
+			var uvURL =
+				"http://api.openweathermap.org/data/2.5/uvi/forecast?" +
+				apiKey +
+				"&lat=" +
+				lat +
+				"&lon=" +
+				lon +
+				"&cnt=1";
+			$.ajax({
+				url: uvURL,
+				method: "GET"
+			}).then(function(response) {
+				var UVindex = $("#currentUV");
+				UVindex.text("UV Index: " + response[0].value);
+			});
 
 			console.log(response.name);
 			// console.log(temp1.weather[0].icon);
@@ -63,7 +74,7 @@ $("#searchBtn").on("click", function() {
 			// Current Conditions for Searched City Name
 			getCurrentWeather(response);
 			// // Current Forecast for Searched City Name
-			getCurrentForecast(response);
+			getCurrentForecast(city);
 			// Searches create a list below and is stored in local storage:
 			makeList();
 
@@ -82,17 +93,17 @@ $("#searchBtn").on("click", function() {
 				var cityName = $("#city-name");
 				cityName.append(response.name);
 				var currentTempF = $("#current-Temp");
-				currentTempF.append((response.main.temp - 273.15) * 1.8 + 32);
+				currentTempF.append(
+					((response.main.temp - 273.15) * 1.8 + 32).toFixed(2)
+				);
 				var currentHumidity = $("#current-humidity");
 				currentHumidity.append(response.main.humidity);
 				var windSpeed = $("#current-Windspeed");
 				windSpeed.append(response.wind.speed);
-				// Make call for UV Index;
-				// var UVindex = $("#currentUV");
 			}
 		});
 	// Function for getting 5 Day Forecast
-	function getCurrentForecast(response) {
+	function getCurrentForecast(city) {
 		$.ajax({
 			url:
 				"https://api.openweathermap.org/data/2.5/forecast?q=" +
@@ -101,17 +112,27 @@ $("#searchBtn").on("click", function() {
 			method: "GET"
 		}).then(function(response) {
 			console.log(response);
-			var day1 = $("#day1");
-			day1.append(response.list[0]);
-			var day2 = $("#day2");
-			day2.append(response.list[1]);
-			var day3 = $("#day3");
-			day3.append(response.list[2]);
-			var day4 = $("#day4");
-			day4.append(response.list[3]);
-			var day5 = $("#day5");
-			day5.append(response.list[4]);
+			var dayIndex = 1;
+			for (let index = 0; index < response.list.length; index++) {
+				const element = response.list[index];
+				if (element.dt_txt.indexOf("15:00:00") !== -1) {
+					dayWeather(dayIndex++, element);
+				}
+			}
 		});
+	}
+	function dayWeather(id, response) {
+		var day = $("#day" + id);
+		var currentTempF = $("<p>");
+		currentTempF.append(
+			"Temperature: " +
+				((response.main.temp - 273.15) * 1.8 + 32).toFixed(2)
+		);
+		var currentHumidity = $("<p>");
+		currentHumidity.append("Humidity: " + response.main.humidity);
+		var windSpeed = $("<p>");
+		windSpeed.append("Wind Speed: " + response.wind.speed);
+		day.append(currentTempF, currentHumidity, windSpeed);
 	}
 });
 
