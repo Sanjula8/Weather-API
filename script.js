@@ -29,6 +29,8 @@ $("#searchBtn").on("click", function() {
 	// var city = "Dallas";
 	var city = $("#searchCity").val();
 
+	// $("#currentCity").empty();
+
 	// Attach Weather API for Current City Weather
 	var queryURL =
 		"https://api.openweathermap.org/data/2.5/weather?q=" + city + apiKey;
@@ -61,6 +63,15 @@ $("#searchBtn").on("click", function() {
 			}).then(function(response) {
 				var UVindex = $("#currentUV");
 				UVindex.text("UV Index: " + response[0].value);
+
+				if (response[0].value > 5) {
+					UVindex.addClass("high-alert");
+				}
+				if (response[0].value < 5) {
+					UVindex.addClass("low-alert");
+				}
+
+				console.log(response);
 			});
 
 			console.log(response.name);
@@ -84,22 +95,30 @@ $("#searchBtn").on("click", function() {
 				weatherStage.removeClass("hide");
 
 				var listItem = $("<li>").text(city);
+				$(".list").append(listItem);
 				// Prepend search items so they appear at the front
-				$(listItem).prepend(searchHistory);
 				console.log(response);
 			}
+
 			// Function for getting current weather conditions
 			function getCurrentWeather(response) {
-				var cityName = $("#city-name");
-				cityName.append(response.name);
+				var cityName = $("#city-name ");
+				var image = $("<img>").attr(
+					"src",
+					"https://openweathermap.org/img/w/" +
+						response.weather[0].icon +
+						".png"
+				);
+				cityName.append(response.name + image);
 				var currentTempF = $("#current-Temp");
 				currentTempF.append(
-					((response.main.temp - 273.15) * 1.8 + 32).toFixed(2)
+					((response.main.temp - 273.15) * 1.8 + 32).toFixed(0) +
+						" °F"
 				);
 				var currentHumidity = $("#current-humidity");
-				currentHumidity.append(response.main.humidity);
+				currentHumidity.append(response.main.humidity + "%");
 				var windSpeed = $("#current-Windspeed");
-				windSpeed.append(response.wind.speed);
+				windSpeed.append(response.wind.speed + " MPH");
 			}
 		});
 	// Function for getting 5 Day Forecast
@@ -121,18 +140,30 @@ $("#searchBtn").on("click", function() {
 			}
 		});
 	}
+
 	function dayWeather(id, response) {
 		var day = $("#day" + id);
 		var currentTempF = $("<p>");
 		currentTempF.append(
 			"Temperature: " +
-				((response.main.temp - 273.15) * 1.8 + 32).toFixed(2)
+				((response.main.temp - 273.15) * 1.8 + 32).toFixed(0) +
+				" °F"
 		);
 		var currentHumidity = $("<p>");
-		currentHumidity.append("Humidity: " + response.main.humidity);
+		currentHumidity.append("Humidity: " + response.main.humidity + "%");
 		var windSpeed = $("<p>");
-		windSpeed.append("Wind Speed: " + response.wind.speed);
-		day.append(currentTempF, currentHumidity, windSpeed);
+		windSpeed.append("Wind Speed: " + response.wind.speed + " MPH");
+		var image2 = $("<img>").attr(
+			"src",
+			"https://openweathermap.org/img/w/" +
+				response.weather[0].icon +
+				".png"
+		);
+		var cityDate = $("<h4>")
+			.addClass("card-title")
+			.text(date.toLocaleDateString("en-US"));
+
+		day.append(cityDate, currentTempF, image2, currentHumidity, windSpeed);
 	}
 });
 
