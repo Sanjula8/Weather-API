@@ -28,9 +28,7 @@ $("#searchBtn").on("click", function() {
 	event.preventDefault();
 	// var city = "Dallas";
 	var city = $("#searchCity").val();
-
-	// $("#currentCity").empty();
-
+	// setTimeout($("#currentCity").empty, 1000);
 	// Attach Weather API for Current City Weather
 	var queryURL =
 		"https://api.openweathermap.org/data/2.5/weather?q=" + city + apiKey;
@@ -94,8 +92,8 @@ $("#searchBtn").on("click", function() {
 				searchHistory.removeClass("hide");
 				weatherStage.removeClass("hide");
 
-				var listItem = $("<li>").text(city);
-				$(".list").append(listItem);
+				var listItem = $(`<p class="padding">`).text(city);
+				$("#search-history").append(listItem);
 				// Prepend search items so they appear at the front
 				console.log(response);
 			}
@@ -103,22 +101,22 @@ $("#searchBtn").on("click", function() {
 			// Function for getting current weather conditions
 			function getCurrentWeather(response) {
 				var cityName = $("#city-name ");
-				var image = $("<img>").attr(
-					"src",
-					"https://openweathermap.org/img/w/" +
-						response.weather[0].icon +
-						".png"
+				var image = $(
+					`<span> ${response.name} <img src="https://openweathermap.org/img/w/${response.weather[0].icon}.png"> </span>`
 				);
-				cityName.append(response.name + image);
+
+				cityName.html(image);
+
 				var currentTempF = $("#current-Temp");
-				currentTempF.append(
-					((response.main.temp - 273.15) * 1.8 + 32).toFixed(0) +
+				currentTempF.html(
+					"Temp " +
+						((response.main.temp - 273.15) * 1.8 + 32).toFixed(0) +
 						" °F"
 				);
 				var currentHumidity = $("#current-humidity");
-				currentHumidity.append(response.main.humidity + "%");
+				currentHumidity.html(response.main.humidity + "%");
 				var windSpeed = $("#current-Windspeed");
-				windSpeed.append(response.wind.speed + " MPH");
+				windSpeed.html(response.wind.speed + " MPH");
 			}
 		});
 	// Function for getting 5 Day Forecast
