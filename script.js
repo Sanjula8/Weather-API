@@ -109,14 +109,16 @@ $("#searchBtn").on("click", function() {
 
 				var currentTempF = $("#current-Temp");
 				currentTempF.html(
-					"Temp " +
+					"Temperature " +
 						((response.main.temp - 273.15) * 1.8 + 32).toFixed(0) +
 						" °F"
 				);
 				var currentHumidity = $("#current-humidity");
-				currentHumidity.html(response.main.humidity + "%");
+				currentHumidity.html(
+					"Humidity: " + response.main.humidity + "%"
+				);
 				var windSpeed = $("#current-Windspeed");
-				windSpeed.html(response.wind.speed + " MPH");
+				windSpeed.html("Wind Speed: " + response.wind.speed + " MPH");
 			}
 		});
 	// Function for getting 5 Day Forecast

@@ -62,3 +62,7 @@ h5 {
 	border: 2px black;
 	background-color: green;
 }
+
+#currentCity {
+	font-size: 25px;
+}
